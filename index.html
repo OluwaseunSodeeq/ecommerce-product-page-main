@@ -19,7 +19,7 @@
     <script defer src="./js-files/script.js"></script>
   </head>
   <body>
-    <div class="overlay"></div>
+    <div class="overlay hide"></div>
     <section class="default-page">
       <nav>
         <div class="logo">
@@ -216,11 +216,14 @@
             Featuring a durable rubber outer sole, they’ll withstand everything
             the weather can offer
           </p>
-          <div class="price">
-            <div class="left item-slected-price">$125.00</div>
-            <div class="right">50%</div>
+          <div class="price-div">
+            <div class="price">
+              <div class="left item-slected-price">$125.00</div>
+              <div class="right">50%</div>
+            </div>
+            <div class="initial-price">$250.00</div>
           </div>
-          <div class="initial-price">$250.00</div>
+
           <div class="last-div">
             <div class="left">
               <span class="minu">
@@ -304,8 +307,19 @@
             />
           </svg>
         </div>
-        <div class="display-selected-item">
-          <img src="./images/image-product-1.jpg" alt="selected-item" />
+        <div class="sliders-container display-selected-item">
+          <div class="slide" data-slide="0">
+            <img src="./images/image-product-1.jpg" alt="selected-item" />
+          </div>
+          <div class="slide" data-slide="1">
+            <img src="./images/image-product-2.jpg" alt="selected-item" />
+          </div>
+          <div class="slide" data-slide="2">
+            <img src="./images/image-product-3.jpg" alt="selected-item" />
+          </div>
+          <div class="slide" data-slide="3">
+            <img src="./images/image-product-4.jpg" alt="selected-item" />
+          </div>
         </div>
         <div class="next btn">
           <svg width="13" height="18" xmlns="http://www.w3.org/2000/svg">

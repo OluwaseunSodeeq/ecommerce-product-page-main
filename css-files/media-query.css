@@ -1,0 +1,77 @@
+@media (max-width: 768px) {
+  nav > .navs {
+    display: none;
+  }
+  .cart-login {
+    left: 60px;
+  }
+  .hero-section {
+    width: 100%;
+    margin-top: 550px;
+    padding-bottom: 50px;
+  }
+  .hero-section > .left,
+  hr,
+  .overlay-other-items,
+  .overlay {
+    display: none;
+  }
+  .hero-section > .right {
+    width: 100%;
+  }
+  .price-div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid red;
+  }
+  .price {
+    margin-left: 10px;
+  }
+  .price > .right {
+    margin-left: 30px;
+  }
+  .initial-price {
+    margin-bottom: -10px;
+    margin-left: 160px;
+  }
+  .last-div {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .last-div > .left {
+    height: 40px;
+    width: 200px;
+  }
+  .display-body {
+    display: block;
+    width: 100%;
+  }
+  .closemodal {
+    margin-left: -150%;
+  }
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    /* top: -20px; */
+  }
+  .cart-div {
+    width: 70%;
+    /* margin: 0 auto; */
+    top: 100px;
+    left: 15%;
+    background-color: aqua;
+
+    z-index: 99;
+  }
+}
+@media (max-width: 500px) {
+  .last-div {
+    flex-direction: column;
+  }
+  .last-div > .left,
+  .last-div > .right {
+    width: 80%;
+  }
+}

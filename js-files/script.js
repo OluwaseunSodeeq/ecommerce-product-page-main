@@ -25,13 +25,33 @@ const displaySelectedItem = displayItemRoot.querySelector(
 let selectedDisplayImage = displaySelectedItem.querySelector("img");
 const allDisplayitemsdiv = document.querySelector(".overlay-other-items");
 const allDisplayImages = allDisplayitemsdiv.querySelectorAll("img");
-console.log(allDisplayitemsdiv, allDisplayImages);
+const sliderContainer = document.querySelector(".sliders-container");
+const sliders = document.querySelectorAll(".slide");
+const nextBtn = document.querySelector(".next");
+const prevBtn = document.querySelector(".previous");
+let curSlide = 0;
+const maxSlide = sliders.length;
+//HIDE CONTENT
+const hideContent = function (contentContainer) {
+  contentContainer.classList.add("hide");
+};
 
-// const overlayPageItemContainer = document.querySelector(".overlay-other-items");
-// const otherItem = document.querySelectorAll(".other-items");display-selected-item
+// TO DISPLAY CART CARD
+const cartIcon = document.querySelector(".cart-icon");
+const cartContainer = document.querySelector(".cart-div");
 
-// let selectedImage = selectedImageDiv.querySelector("img");
-// const containerofDisplayImg = document.querySelector(".container");
+const displayCartDiv = function () {
+  cartContainer.classList.toggle("hide");
+  console.log("hi");
+};
+const hideCartDiv = function () {
+  cartContainer.classList.toggle("hide");
+};
+// cartIcon.addEventListener("mouseenter", displayCartDiv);
+// cartContainer.addEventListener("mouseenter", displayCartDiv);
+cartIcon.addEventListener("click", displayCartDiv);
+// cartIcon.addEventListener("mouseover", displayCartDiv);
+// cartIcon.addEventListener("mouseout", hideCartDiv);
 
 // ========== TO HIDE THE OVERLAY AND DISPLAY CONTAINER
 const displayHide$Show = function () {
@@ -61,12 +81,6 @@ const crement = function (e) {
 minusBtn.addEventListener("click", crement);
 plusBtn.addEventListener("click", crement);
 
-// ========== INIT FUNCTION
-const init = function () {
-  hideOverlay();
-};
-// init();
-
 closeBtn.addEventListener("click", hideOverlay);
 // closeBtn.addEventListener("click", displayHide$Show);
 overlay.addEventListener("click", hideOverlay);
@@ -75,41 +89,73 @@ overlay.addEventListener("click", hideOverlay);
 function removeActiveFromAll(allmainImages) {
   allmainImages.forEach((each) => each.classList.remove("active-image"));
 }
-function itemFunction(allImages, click, selectedImg) {
+function itemFunction(allImages, click, selectedImg, selectedImgdis, imgArray) {
   if (!click) return;
-  if (itemNumber.textContent === "0") itemNumber.textContent = 1;
+  //   if (itemNumber.textContent === "0") itemNumber.textContent = 1;
+  itemNumber.textContent = 1;
   removeActiveFromAll(allImages);
   click.classList.add("active-image");
   selectedImg.src = click.src;
+  selectedImgdis.src = click.src;
+  const datasetNum = click.dataset.img;
+  const newActive = [...imgArray].filter(
+    (each) => each.dataset.img === datasetNum
+  );
+  removeActiveFromAll(imgArray);
+  newActive[0].classList.add("active-image");
+  //   curSlide = datasetNum;
+  goToSlide(`${datasetNum - 1}`);
+  //   console.log(click.dataset);
 }
 const itemPickedOnMainPage = function (e) {
   const clicked = e.target.closest(".img");
-  itemFunction(allmainImages, clicked, selectedImage);
+  itemFunction(
+    allmainImages,
+    clicked,
+    selectedImage,
+    selectedDisplayImage,
+    allDisplayImages
+  );
   showOverlay();
   displayHide$Show();
 };
 const itemPickedOnDisplayedPage = function (e) {
   const clicked = e.target.closest(".img");
-  console.log(e.target);
-
-  itemFunction(allDisplayImages, clicked, selectedDisplayImage);
+  itemFunction(
+    allDisplayImages,
+    clicked,
+    selectedDisplayImage,
+    selectedImage,
+    allmainImages
+  );
 };
 allmainitemsdiv.addEventListener("click", itemPickedOnMainPage);
-console.log(allDisplayitemsdiv, allDisplayImages);
 allDisplayitemsdiv.addEventListener("click", itemPickedOnDisplayedPage);
 
 // ========== CART BUTTON FUNCTIONALITY
 const cartBtn = document.querySelector(".cartBtn");
 
 cartBtn.addEventListener("click", function () {
-  const items = Array.from(allmainImages);
-  console.log(items);
+  //   const items = Array.from(allmainImages);
+  //   console.log(items);
 
-  const activeImage = items.filter((each) =>
+  const activeImage = [...allmainImages].filter((each) =>
     each.classList.contains("active-image")
   );
+  let selectedImage;
+  console.log(activeImage[0]);
+  //   console.log(activeImage[0].src);
+  if (activeImage[0]) {
+    selectedImage = activeImage[0].src;
+  } else {
+    selectedImage = `images/image-product-${curSlide + 1}}.jpg`;
+    console.log(curSlide + 1);
 
-  const selectedImage = activeImage[0].src;
+    // http://127.0.0.1:5502/images/image-product-4.jpg
+  }
+
+  console.log(selectedImage);
+
   const noOfitem = itemNumber.textContent;
   const itemPric = document.querySelector(".item-slected-price").textContent;
   const itemPrice = itemPric.slice(1);
@@ -159,7 +205,6 @@ cartBtn.addEventListener("click", function () {
     const removeItem = e.target.closest(".cart-item");
     cartList.removeChild(removeItem);
     if (cartList.innerText === "") {
-      console.log("empty");
       checkoutBtn.classList.add("hide");
       emptyCartMsg.classList.remove("hide");
     }
@@ -167,37 +212,91 @@ cartBtn.addEventListener("click", function () {
 });
 
 // SLIDER
-const directionFunction = function (index = 1) {
-  //   const eachBodyWidth = allSlides[0].getBoundingClientRect().width;
-  Array.from(allSlides).forEach((each, i) => {
-    // each.style.transform = `translateX(${100 * (i - index)}%)`;
+
+const addMarginLeftToAll = function (index = 1) {
+  Array.from(sliders).forEach((each, i) => {
     each.style.left = `${i * 100}%`;
   });
 };
+addMarginLeftToAll();
 
 //   INDICATOR
 
-const activateIndicator = function (page) {
-  const curPage = page + 1;
-  for (const each of allIndicators) {
-    each.classList.remove("indicator");
-  }
-  allIndicators.forEach((each) => {
-    if (+each.textContent !== curPage) return;
-    each.classList.add("indicator");
-  });
+// const activateIndicator = function (page) {
+//   const curPage = page + 1;
+//   for (const each of allIndicators) {
+//     each.classList.remove("indicator");
+//   }
+//   allIndicators.forEach((each) => {
+//     if (+each.textContent !== curPage) return;
+//     each.classList.add("indicator");
+//   });
 
-  if (curPage == 1) {
-    prevBtn.classList.add("btnOpacity");
-  }
-  if (curPage > 3) {
-    nextBtn.textContent = "Confirm";
-  } else {
-    nextBtn.textContent = "Next Step";
-  }
-  if (curPage > 4) {
-    const btnValuewithin = nextBtn.textContent;
-    nextBtn.classList.add("btnOpacity");
-    prevBtn.classList.add("btnOpacity");
-  }
+//   if (curPage == 1) {
+//     prevBtn.classList.add("btnOpacity");
+//   }
+//   if (curPage > 3) {
+//     nextBtn.textContent = "Confirm";
+//   } else {
+//     nextBtn.textContent = "Next Step";
+//   }
+//   if (curPage > 4) {
+//     const btnValuewithin = nextBtn.textContent;
+//     nextBtn.classList.add("btnOpacity");
+//     prevBtn.classList.add("btnOpacity");
+//   }
+// };
+// new
+const goToSlide = function (curSlide) {
+  sliders.forEach(
+    (slide) => (slide.style.transform = `translateX(-${curSlide * 100}%)`)
+  );
 };
+const slidingActivator = function () {
+  removeActiveFromAll(allmainImages);
+  removeActiveFromAll(allDisplayImages);
+  console.log(curSlide);
+  const activeMainImage = [...allDisplayImages].filter(
+    (each) => +each.dataset.img === curSlide + 1
+  );
+  const activeDisplayImage = [...allDisplayImages].filter(
+    (each) => +each.dataset.img === curSlide + 1
+  );
+
+  activeMainImage[0].classList.add("active-image");
+  activeDisplayImage[0].classList.add("active-image");
+};
+const nextSlide = function () {
+  if (curSlide === maxSlide - 1) {
+    curSlide = 0;
+  } else {
+    curSlide++;
+  }
+  console.log("next");
+
+  goToSlide(curSlide);
+  slidingActivator();
+};
+
+const prevSlide = function () {
+  if (curSlide === 0) {
+    curSlide = maxSlide - 1;
+  } else {
+    curSlide--;
+  }
+  console.log(prevBtn);
+
+  goToSlide(curSlide);
+  slidingActivator();
+};
+prevBtn.addEventListener("click", prevSlide);
+nextBtn.addEventListener("click", nextSlide);
+
+// ========== INIT FUNCTION
+const init = function () {
+  //   hideOverlay();
+  //   hideContent(cartContainer);
+  hideContent(overlay);
+  hideContent(displayItemRoot);
+};
+init();
