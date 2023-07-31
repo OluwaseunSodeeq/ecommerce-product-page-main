@@ -2,6 +2,7 @@
 // ========== VARIABLES
 const closeBtn = document.querySelector(".closemodal");
 const overlay = document.querySelector(".overlay");
+const overlayside = document.querySelector(".overlayleft");
 const body = document.querySelector("body");
 let itemNumber = document.querySelector(".item-num");
 const minusBtn = document.querySelector(".minu");
@@ -31,22 +32,22 @@ const nextBtn = document.querySelector(".next");
 const prevBtn = document.querySelector(".previous");
 let curSlide = 0;
 const maxSlide = sliders.length;
-//HIDE CONTENT
-const hideContent = function (contentContainer) {
-  contentContainer.classList.add("hide");
-};
 
-// TO DISPLAY CART CARD
 const cartIcon = document.querySelector(".cart-icon");
 const cartContainer = document.querySelector(".cart-div");
 
+//HIDE CONTENT
+const hideContent = function () {
+  this.classList.toggle("hide");
+};
+
+// TO DISPLAY CART CARD
 const displayCartDiv = function () {
   cartContainer.classList.toggle("hide");
-  console.log("hi");
 };
-const hideCartDiv = function () {
-  cartContainer.classList.toggle("hide");
-};
+// const hideContent = function (cartContainer) {
+//   cartContainer.classList.toggle("hide");
+// };
 // cartIcon.addEventListener("mouseenter", displayCartDiv);
 // cartContainer.addEventListener("mouseenter", displayCartDiv);
 cartIcon.addEventListener("click", displayCartDiv);
@@ -59,13 +60,33 @@ const displayHide$Show = function () {
 };
 
 // ========== TO HIDE THE OVERLAY
-const hideOverlay = function (e) {
+const hideOverlay = function () {
   overlay.classList.add("hide");
-  displayHide$Show();
+  overlayside.classList.add("hide");
+  const observer = new ResizeObserver((enteries) => {
+    // console.log(enteries);
+    // console.log(enteries[0].contentRect.width);
+    if (enteries[0].contentRect.width > 1024) {
+      displayHide$Show();
+    }
+  });
+  observer.observe(body);
+
+  // if (.contains(".hide")) console.log("hello");
+
+  // displayHide$Show();
 };
 // ========== TO SHOW THE OVERLAY
 const showOverlay = function () {
   overlay.classList.remove("hide");
+};
+const hideSideeOverlay = function () {
+  overlayside.classList.add("hide");
+  displayHide$Show();
+};
+// ========== TO SHOW THE OVERLAY
+const showSIdeOverlay = function () {
+  overlayside.classList.remove("hide");
 };
 
 // ========== INCREMENT AND DECREMENT FUNCTION
@@ -95,16 +116,32 @@ function itemFunction(allImages, click, selectedImg, selectedImgdis, imgArray) {
   itemNumber.textContent = 1;
   removeActiveFromAll(allImages);
   click.classList.add("active-image");
+  const newImageSrc = click.src.slice(-41);
+  console.log(newImageSrc);
+
   selectedImg.src = click.src;
   selectedImgdis.src = click.src;
+  console.log(click.src);
+  console.log(selectedImg.src);
+  console.log(selectedImgdis.src);
+
   const datasetNum = click.dataset.img;
   const newActive = [...imgArray].filter(
     (each) => each.dataset.img === datasetNum
   );
   removeActiveFromAll(imgArray);
+
+  const datasetNum1 = click.dataset.img;
+  const newActive1 = [...allImages].filter(
+    (each) => each.dataset.img === datasetNum
+  );
+  // removeActiveFromAll(imgArray);
   newActive[0].classList.add("active-image");
+  newActive1[0].classList.add("active-image");
   //   curSlide = datasetNum;
   goToSlide(`${datasetNum - 1}`);
+  itemNumber.textContent = 1;
+
   //   console.log(click.dataset);
 }
 const itemPickedOnMainPage = function (e) {
@@ -112,8 +149,8 @@ const itemPickedOnMainPage = function (e) {
   itemFunction(
     allmainImages,
     clicked,
-    selectedImage,
     selectedDisplayImage,
+    selectedImage,
     allDisplayImages
   );
   showOverlay();
@@ -134,8 +171,7 @@ allDisplayitemsdiv.addEventListener("click", itemPickedOnDisplayedPage);
 
 // ========== CART BUTTON FUNCTIONALITY
 const cartBtn = document.querySelector(".cartBtn");
-
-cartBtn.addEventListener("click", function () {
+const addItemToCart = function () {
   //   const items = Array.from(allmainImages);
   //   console.log(items);
 
@@ -143,61 +179,61 @@ cartBtn.addEventListener("click", function () {
     each.classList.contains("active-image")
   );
   let selectedImage;
-  console.log(activeImage[0]);
-  //   console.log(activeImage[0].src);
   if (activeImage[0]) {
     selectedImage = activeImage[0].src;
   } else {
-    selectedImage = `images/image-product-${curSlide + 1}}.jpg`;
-    console.log(curSlide + 1);
-
-    // http://127.0.0.1:5502/images/image-product-4.jpg
+    selectedImage = `./images/image-product-${curSlide + 1}.jpg`;
+    // console.log(curSlide + 1);
   }
 
   console.log(selectedImage);
 
-  const noOfitem = itemNumber.textContent;
+  let noOfitem = itemNumber.textContent;
+  console.log("it worked!");
+  if (noOfitem === "0") return;
+
   const itemPric = document.querySelector(".item-slected-price").textContent;
   const itemPrice = itemPric.slice(1);
   console.log(noOfitem, itemPrice);
 
   const html = `
-  <li class="preview cart-item">
-        <figure class="preview-image">
-            <img src="${selectedImage}" alt="Test" />
-        </figure>
-        <div class="preview__data">
-            <h6 class="preview__name">Fall Limited Edition Sneakers</h6>
-            <p>
-            <span class="item-price">$${itemPrice}</span> X
-            <span class="num-of-items">${noOfitem}</span>
-            <span class="each-total">$ ${itemPrice * noOfitem}.00 </span>
-            </p>
-        </div>
-        <div class="delete-icon">
-            <svg
-            width="14"
-            height="16"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            >
-            <defs>
-                <path
-                d="M0 2.625V1.75C0 1.334.334 1 .75 1h3.5l.294-.584A.741.741 0 0 1 5.213 0h3.571a.75.75 0 0 1 .672.416L9.75 1h3.5c.416 0 .75.334.75.75v.875a.376.376 0 0 1-.375.375H.375A.376.376 0 0 1 0 2.625Zm13 1.75V14.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 1 14.5V4.375C1 4.169 1.169 4 1.375 4h11.25c.206 0 .375.169.375.375ZM4.5 6.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Z"
-                id="a"
-                />
-            </defs>
-            <use fill="#C3CAD9" fill-rule="nonzero" xlink:href="#a" />
-            </svg>
-        </div>
-    </li>
-  `;
+    <li class="preview cart-item">
+          <figure class="preview-image">
+              <img src="${selectedImage}" alt="Test" />
+          </figure>
+          <div class="preview__data">
+              <h6 class="preview__name">Fall Limited Edition Sneakers</h6>
+              <p>
+              <span class="item-price">$${itemPrice}</span> X
+              <span class="num-of-items">${noOfitem}</span>
+              <span class="each-total">$ ${itemPrice * noOfitem}.00 </span>
+              </p>
+          </div>
+          <div class="delete-icon">
+              <svg
+              width="14"
+              height="16"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+              <defs>
+                  <path
+                  d="M0 2.625V1.75C0 1.334.334 1 .75 1h3.5l.294-.584A.741.741 0 0 1 5.213 0h3.571a.75.75 0 0 1 .672.416L9.75 1h3.5c.416 0 .75.334.75.75v.875a.376.376 0 0 1-.375.375H.375A.376.376 0 0 1 0 2.625Zm13 1.75V14.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 1 14.5V4.375C1 4.169 1.169 4 1.375 4h11.25c.206 0 .375.169.375.375ZM4.5 6.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Z"
+                  id="a"
+                  />
+              </defs>
+              <use fill="#C3CAD9" fill-rule="nonzero" xlink:href="#a" />
+              </svg>
+          </div>
+      </li>
+    `;
   cartList.insertAdjacentHTML("afterbegin", html);
   if (cartList === "") return;
   checkoutBtn.classList.remove("hide");
   emptyCartMsg.classList.add("hide");
 
   //   console.log(...selectedImage);
+  itemNumber.textContent = 0;
 
   // ========== TO REMOVE ONE OF THE LISTS
   const removeBtn = document.querySelector(".delete-icon");
@@ -209,7 +245,7 @@ cartBtn.addEventListener("click", function () {
       emptyCartMsg.classList.remove("hide");
     }
   });
-});
+};
 
 // SLIDER
 
@@ -218,7 +254,6 @@ const addMarginLeftToAll = function (index = 1) {
     each.style.left = `${i * 100}%`;
   });
 };
-addMarginLeftToAll();
 
 //   INDICATOR
 
@@ -289,14 +324,42 @@ const prevSlide = function () {
   goToSlide(curSlide);
   slidingActivator();
 };
+const hideSideOverlay = function () {
+  overlayside.classList.toggle("hide");
+  overlay.classList.toggle("hide");
+  // displayHide$Show();
+  // showSIdeOverlay()
+
+  console.log("yes");
+};
+
+const logo = document.querySelector(".logo");
+
+logo.addEventListener("click", hideSideOverlay);
+overlayside.addEventListener("click", hideSideOverlay);
+cartBtn.addEventListener("click", addItemToCart);
 prevBtn.addEventListener("click", prevSlide);
 nextBtn.addEventListener("click", nextSlide);
+const observer = new ResizeObserver((enteries) => {
+  // console.log(enteries);
+  // console.log(enteries[0].contentRect.width);
+  if (enteries[0].contentRect.width > 1024)
+    displayItemRoot.classList.add("hide");
 
+  if (enteries[0].contentRect.width < 1024)
+    displayItemRoot.classList.remove("hide");
+  // closeBtn.classList.add("hide");
+  // allDisplayitemsdiv.classList.add("hide");
+});
+observer.observe(body);
 // ========== INIT FUNCTION
 const init = function () {
+  addMarginLeftToAll();
+
   //   hideOverlay();
   //   hideContent(cartContainer);
-  hideContent(overlay);
-  hideContent(displayItemRoot);
+  //   hideContent(overlay);
+  //   hideContent(displayItemRoot);
+  //   hideContent();
 };
 init();

@@ -50,17 +50,20 @@ body .default-page {
 nav {
   padding-bottom: 10px;
 }
-
+.logo svg:first-child {
+  /* margin-left: -100%; */
+  display: none;
+}
 nav,
 nav > .navs,
 .hero-section,
 .hero-section > .left > .other-items,
 .overlay-other-items,
-.last-div,
+/* .last-div, */
 .price,
 .last-div .left,
 .last-div .right,
-.preview {
+.preview,.hero-section > .right > .price-div {
   /* .display-body .other-items { */
   display: flex;
   justify-content: space-between;
@@ -69,15 +72,20 @@ nav > .navs,
 
 nav > .navs,
 .cart-login,
-.cart-login-icons {
+.cart-login-icons,
+.overlayleft > .navs {
   list-style-type: none;
   gap: 50px;
 }
-nav > .navs li a {
+nav > .navs li a,
+.overlayleft > .navs a {
   text-decoration: none;
+  font-size: 18px;
+}
+
+nav > .navs li a {
   color: var(--Dark-grayish-blue);
   font-weight: 500;
-  font-size: 18px;
 }
 
 .hero-section {
@@ -88,8 +96,8 @@ nav > .navs li a {
   /* border: 3px solid #000; */
 }
 .hero-section > .left,
-.hero-section > .right,
-.last-div {
+.hero-section > .right
+/* .last-div */ {
   width: 570px;
 }
 
@@ -129,6 +137,11 @@ nav > .navs li a {
   line-height: 1.5;
   color: var(--Dark-grayish-blue);
 }
+.hero-section > .right > .price-div {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 90px;
+}
 .price div:first-child {
   color: var(--Black);
   font-weight: 700;
@@ -141,8 +154,11 @@ nav > .navs li a {
   font-size: 18px;
   padding: 0px 10px;
 }
-.last-div {
+.hero-section > .right > .last-div {
+  width: 100%;
+  display: flex;
   justify-content: flex-start;
+  align-items: center;
   margin-top: 25px;
   gap: 50px;
 }
@@ -158,9 +174,9 @@ nav > .navs li a {
   width: 180px;
   margin-top: 30px;
 }
+
 .initial-price {
-  width: 200px;
-  margin-top: 20px;
+  margin-top: 35px;
   color: var(--Dark-grayish-blue);
   font-weight: 700;
   font-size: 18px;
@@ -195,6 +211,7 @@ nav > .navs li a {
   justify-content: center;
   align-items: center;
   margin-right: 100px;
+  /* border: 2px solid blue; */
 
   /* margin-right: 50px; */
 }
@@ -203,6 +220,7 @@ nav > .navs li a {
   width: 50px;
   border-radius: 7px;
 }
+
 .cart-login-icons,
 .cart__list,
 .display-body,
@@ -221,18 +239,18 @@ nav > .navs li a {
 /* Cart div */
 .cart-div {
   position: absolute;
-  left: 1138px;
+  left: 1108px;
   width: 350px;
   height: auto;
   border: 2px solid var(--White);
   border-radius: 7px;
-  padding-top: 30px;
+  padding-top: 20px;
   padding-bottom: 30px;
   z-index: 3px;
   background-color: var(--White);
-  top: 40px;
+  top: 70px;
   box-shadow: 0px 5px 0.4em var(--Dark-grayish-blue);
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 .cart-div > p {
   color: var(--Black);
@@ -242,6 +260,8 @@ nav > .navs li a {
   padding-bottom: 10px;
 }
 .cart__list {
+  width: 90%;
+  margin: 0 auto;
   margin-top: 10px;
 }
 .empty-cart-messsage > p {
@@ -250,10 +270,10 @@ nav > .navs li a {
   font-size: 18px;
   text-align: center;
 }
+
 .cart__list li,
 .cart-div button {
   width: 90%;
-  margin: 0px auto;
 }
 .cart__list li {
   margin-top: 10px;
@@ -265,9 +285,11 @@ nav > .navs li a {
   border: none;
   border-radius: 8px;
   font-size: 16px;
-  margin: 10px 0px 0px 10px;
+  margin-left: 5%;
+  margin-top: 10px;
+  cursor: pointer;
 
-  text-align: center;
+  /* text-align: center; */
   /* width: ; */
 }
 .preview__data {
@@ -283,23 +305,37 @@ nav > .navs li a {
   font-weight: 700px;
   font-size: 20px;
 }
+.preview .delete-icon,
+.cart-login-icons .login,
+.cart-login-icons .cart-icon {
+  width: 40px;
+  /* height: 40px; */
+  /* border-radius: 50%; */
+  cursor: pointer;
+}
 .hide {
   display: none;
 }
 
 /* overlay */
-.overlay {
+.overlay,
+.overlayleft {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   z-index: 2;
   transition: all 0.5s;
 }
-
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+}
+.overlayleft {
+  width: 70%;
+  background-color: #fff;
+}
 .hidden {
   visibility: hidden;
   opacity: 0;
@@ -339,20 +375,10 @@ nav > .navs li a {
   padding-bottom: 30px;
   left: 0;
   right: 0;
-  /* border: 2px solid red; */
 
   top: 20px;
   margin: 0 auto;
 }
-
-/* .overlay-other-items,
-.container {
-  width: 500px;
-} */
-/* .container {
-  position: relative;
-  /* border: 2px solid #000; 
-} */
 
 .container {
   position: relative;
@@ -408,7 +434,7 @@ nav > .navs li a {
 /* SLIDER */
 .container > .sliders-container {
   position: relative;
-  width: 95%;
+  width: 100%;
   z-index: 2;
   height: 450px;
   margin: 0 auto;
@@ -421,8 +447,10 @@ nav > .navs li a {
   top: 0;
   width: 100%;
   height: 100%;
+  /* height: 90%; */
   transition: all 0.25s ease-in-out;
 }
 .sliders-container > .slide img {
   width: 100%;
+  object-fit: fill;
 }
