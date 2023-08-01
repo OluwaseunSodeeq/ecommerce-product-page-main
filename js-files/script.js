@@ -34,6 +34,7 @@ let curSlide = 0;
 const maxSlide = sliders.length;
 
 const cartIcon = document.querySelector(".cart-icon");
+const numOfListitem = cartIcon.querySelector("p");
 const cartContainer = document.querySelector(".cart-div");
 
 //HIDE CONTENT
@@ -42,8 +43,10 @@ const hideContent = function () {
 };
 
 // TO DISPLAY CART CARD
+const cartIcon$loginDiv = document.querySelector(".cart-login");
 const displayCartDiv = function () {
   cartContainer.classList.toggle("hide");
+  cartIcon$loginDiv.classList.toggle("rightMargin");
 };
 // const hideContent = function (cartContainer) {
 //   cartContainer.classList.toggle("hide");
@@ -116,24 +119,26 @@ function itemFunction(allImages, click, selectedImg, selectedImgdis, imgArray) {
   itemNumber.textContent = 1;
   removeActiveFromAll(allImages);
   click.classList.add("active-image");
-  const newImageSrc = click.src.slice(-41);
+  const newImageSrc = click.src.slice(-23);
   console.log(newImageSrc);
 
   selectedImg.src = click.src;
   selectedImgdis.src = click.src;
+
   console.log(click.src);
   console.log(selectedImg.src);
   console.log(selectedImgdis.src);
+
+  removeActiveFromAll(imgArray);
 
   const datasetNum = click.dataset.img;
   const newActive = [...imgArray].filter(
     (each) => each.dataset.img === datasetNum
   );
-  removeActiveFromAll(imgArray);
 
   const datasetNum1 = click.dataset.img;
   const newActive1 = [...allImages].filter(
-    (each) => each.dataset.img === datasetNum
+    (each) => each.dataset.img === datasetNum1
   );
   // removeActiveFromAll(imgArray);
   newActive[0].classList.add("active-image");
@@ -171,10 +176,13 @@ allDisplayitemsdiv.addEventListener("click", itemPickedOnDisplayedPage);
 
 // ========== CART BUTTON FUNCTIONALITY
 const cartBtn = document.querySelector(".cartBtn");
-const addItemToCart = function () {
-  //   const items = Array.from(allmainImages);
-  //   console.log(items);
 
+const updateNumOfListItem = function () {
+  const allList = cartList.querySelectorAll("li");
+  if (allList > 0 || allList === "" || allList > 0) console.log("Empty");
+  numOfListitem.textContent = allList.length;
+};
+const addItemToCart = function () {
   const activeImage = [...allmainImages].filter((each) =>
     each.classList.contains("active-image")
   );
@@ -235,6 +243,8 @@ const addItemToCart = function () {
   //   console.log(...selectedImage);
   itemNumber.textContent = 0;
 
+  updateNumOfListItem();
+  // let NumofListItem =
   // ========== TO REMOVE ONE OF THE LISTS
   const removeBtn = document.querySelector(".delete-icon");
   removeBtn.addEventListener("click", function (e) {
@@ -244,6 +254,7 @@ const addItemToCart = function () {
       checkoutBtn.classList.add("hide");
       emptyCartMsg.classList.remove("hide");
     }
+    updateNumOfListItem();
   });
 };
 
@@ -291,13 +302,16 @@ const slidingActivator = function () {
   removeActiveFromAll(allmainImages);
   removeActiveFromAll(allDisplayImages);
   console.log(curSlide);
-  const activeMainImage = [...allDisplayImages].filter(
-    (each) => +each.dataset.img === curSlide + 1
+  const newCurslide = curSlide + 1;
+  const activeMainImage = [...allmainImages].filter(
+    (each) => +each.dataset.img === newCurslide
   );
   const activeDisplayImage = [...allDisplayImages].filter(
-    (each) => +each.dataset.img === curSlide + 1
+    (each) => +each.dataset.img === newCurslide
   );
+  console.log(activeMainImage);
 
+  selectedImage.src = activeMainImage[0].src;
   activeMainImage[0].classList.add("active-image");
   activeDisplayImage[0].classList.add("active-image");
 };
@@ -309,8 +323,8 @@ const nextSlide = function () {
   }
   console.log("next");
 
-  goToSlide(curSlide);
   slidingActivator();
+  goToSlide(curSlide);
 };
 
 const prevSlide = function () {
@@ -321,8 +335,8 @@ const prevSlide = function () {
   }
   console.log(prevBtn);
 
-  goToSlide(curSlide);
   slidingActivator();
+  goToSlide(curSlide);
 };
 const hideSideOverlay = function () {
   overlayside.classList.toggle("hide");
@@ -334,7 +348,6 @@ const hideSideOverlay = function () {
 };
 
 const logo = document.querySelector(".logo");
-
 logo.addEventListener("click", hideSideOverlay);
 overlayside.addEventListener("click", hideSideOverlay);
 cartBtn.addEventListener("click", addItemToCart);

@@ -1,4 +1,7 @@
 @media (max-width: 1024px) {
+  body::-webkit-scrollbar {
+    display: none;
+  }
   body .default-page {
     width: 100%;
     padding: 20px 30px;
@@ -6,6 +9,12 @@
   }
   nav > .navs {
     display: none;
+  }
+  nav {
+    padding-right: 100px;
+  }
+  .cart-login {
+    margin-right: 0px;
   }
   .overlayleft,
   .overlay {
@@ -23,7 +32,6 @@
     margin-top: 30px;
   }
   .overlayleft > .navs a {
-    /* color: #444343; */
     color: #010814;
     font-weight: 900;
     font-size: 20px;
@@ -32,21 +40,19 @@
 
   .logo svg:first-child {
     display: inline;
-    /* margin-left: 0; */
     z-index: 90;
   }
   .cart-login {
     left: 90px;
-    /* left: 60px; */
   }
   .cart-login-icons {
     gap: 0px;
   }
   .hero-section {
     width: 100%;
-    margin-top: 550px;
+    margin-top: 450px;
     padding: 0px;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
   }
   .hero-section > .left,
   hr,
@@ -59,14 +65,12 @@
   }
   .hero-section > .right > p {
     width: 100%;
+    /* margin-top: -5px; */
   }
   .hero-section > .right > .price-div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    /* width: 100%; */
-    /* border: 2px solid red; */
   }
   .price {
     margin-left: 10px;
@@ -89,12 +93,9 @@
     width: 200px;
   }
   .display-body {
-    /* display: flex; */
     width: 100%;
-    /* height: 500px; */
     padding: 0px;
     margin-top: 90px;
-    /* border: 2px dashed blue; */
   }
   .closemodal {
     margin-left: -150%;
@@ -108,12 +109,14 @@
     margin: 0 auto;
     padding: 0px;
   }
-
+  .sliders-container > .slide {
+    padding: 0px;
+  }
   .sliders-container > .slide img {
     width: 100%;
     padding: 0px;
     object-fit: fill;
-    height: 100%;
+    height: 90%;
   }
   .cart-div {
     width: 70%;
@@ -123,8 +126,8 @@
     z-index: 99;
   }
   .cart-div > .checkout {
-    width: 80%;
-    margin-left: 10%;
+    width: 90%;
+    margin-left: 5%;
   }
   .container .previous {
     left: 30px;
@@ -152,7 +155,11 @@
     left: 5%;
     top: 90px;
   }
+  .sliders-container > .slide img {
+    height: 100%;
+  }
   .hero-section {
+    overflow-x: hidden;
     width: 100%;
     padding: 0px 15px;
     margin-top: 520px;
@@ -196,8 +203,9 @@
     /* left: 0px; */
   }
   .hero-section {
-    padding: 0 10px;
-    margin-top: 420px;
+    padding: 20px 10px 20px;
+    padding-bottom: 20px;
+    margin-top: 500px;
   }
   /* .hero-section > .right {
     /* margin-top: -120px; */
