@@ -121,6 +121,10 @@ nav > .navs {
   width: 100%;
   border-radius: 8px;
 }
+.hero-section > .right {
+  margin-top: -80px;
+}
+
 .hero-section > .right h3 {
   color: var(--Orange);
   font-weight: 700;

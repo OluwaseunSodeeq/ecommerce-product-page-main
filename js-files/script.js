@@ -4,6 +4,10 @@ const closeBtn = document.querySelector(".closemodal");
 const overlay = document.querySelector(".overlay");
 const overlayside = document.querySelector(".overlayleft");
 const body = document.querySelector("body");
+const heroSection = document.querySelector(".hero-section");
+const nav = document.querySelector("nav");
+const defPage = document.querySelector(".default-page");
+
 let itemNumber = document.querySelector(".item-num");
 const minusBtn = document.querySelector(".minu");
 const plusBtn = document.querySelector(".plus");
@@ -41,21 +45,20 @@ const cartContainer = document.querySelector(".cart-div");
 const hideContent = function () {
   this.classList.toggle("hide");
 };
-
+//HIDE THE CART CARD WHEN CLICKED
+[heroSection, displayItemRoot].forEach((ev) =>
+  ev.addEventListener("click", function () {
+    cartContainer.classList.add("hide");
+  })
+);
 // TO DISPLAY CART CARD
 const cartIcon$loginDiv = document.querySelector(".cart-login");
 const displayCartDiv = function () {
   cartContainer.classList.toggle("hide");
   cartIcon$loginDiv.classList.toggle("rightMargin");
 };
-// const hideContent = function (cartContainer) {
-//   cartContainer.classList.toggle("hide");
-// };
-// cartIcon.addEventListener("mouseenter", displayCartDiv);
-// cartContainer.addEventListener("mouseenter", displayCartDiv);
+
 cartIcon.addEventListener("click", displayCartDiv);
-// cartIcon.addEventListener("mouseover", displayCartDiv);
-// cartIcon.addEventListener("mouseout", hideCartDiv);
 
 // ========== TO HIDE THE OVERLAY AND DISPLAY CONTAINER
 const displayHide$Show = function () {
@@ -67,17 +70,11 @@ const hideOverlay = function () {
   overlay.classList.add("hide");
   overlayside.classList.add("hide");
   const observer = new ResizeObserver((enteries) => {
-    // console.log(enteries);
-    // console.log(enteries[0].contentRect.width);
     if (enteries[0].contentRect.width > 1024) {
       displayHide$Show();
     }
   });
   observer.observe(body);
-
-  // if (.contains(".hide")) console.log("hello");
-
-  // displayHide$Show();
 };
 // ========== TO SHOW THE OVERLAY
 const showOverlay = function () {
@@ -106,7 +103,6 @@ minusBtn.addEventListener("click", crement);
 plusBtn.addEventListener("click", crement);
 
 closeBtn.addEventListener("click", hideOverlay);
-// closeBtn.addEventListener("click", displayHide$Show);
 overlay.addEventListener("click", hideOverlay);
 
 // ========== MAIN PAGE ITEMS FUNTIONALITY
@@ -115,7 +111,6 @@ function removeActiveFromAll(allmainImages) {
 }
 function itemFunction(allImages, click, selectedImg, selectedImgdis, imgArray) {
   if (!click) return;
-  //   if (itemNumber.textContent === "0") itemNumber.textContent = 1;
   itemNumber.textContent = 1;
   removeActiveFromAll(allImages);
   click.classList.add("active-image");
@@ -140,10 +135,8 @@ function itemFunction(allImages, click, selectedImg, selectedImgdis, imgArray) {
   const newActive1 = [...allImages].filter(
     (each) => each.dataset.img === datasetNum1
   );
-  // removeActiveFromAll(imgArray);
   newActive[0].classList.add("active-image");
   newActive1[0].classList.add("active-image");
-  //   curSlide = datasetNum;
   goToSlide(`${datasetNum - 1}`);
   itemNumber.textContent = 1;
 
