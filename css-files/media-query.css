@@ -49,8 +49,9 @@
     gap: 0px;
   }
   .hero-section {
+    justify-content: space-between;
     width: 100%;
-    margin-top: 450px;
+    margin-top: 430px;
     padding: 0px;
     padding-bottom: 20px;
   }
