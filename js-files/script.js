@@ -15,8 +15,6 @@ const cartList = document.querySelector(".cart__list");
 const checkoutBtn = document.querySelector(".checkout");
 const emptyCartMsg = document.querySelector(".empty-cart-messsage");
 
-// console.log(itemNumber.textContent);
-
 const mainPageItemContainer = document.querySelector(".hero-section-left");
 const allmainitemsdiv = mainPageItemContainer.querySelector(".other-items");
 const selectedImageDiv = mainPageItemContainer.querySelector(".selected-item");
@@ -35,7 +33,8 @@ const sliders = document.querySelectorAll(".slide");
 const nextBtn = document.querySelector(".next");
 const prevBtn = document.querySelector(".previous");
 let curSlide = 0;
-const maxSlide = sliders.length;
+const maxSlide = sliders.length - 1;
+const zero = 0;
 
 const cartIcon = document.querySelector(".cart-icon");
 const numOfListitem = cartIcon.querySelector("p");
@@ -92,13 +91,16 @@ const showSIdeOverlay = function () {
 // ========== INCREMENT AND DECREMENT FUNCTION
 const crement = function (e) {
   let curNum = itemNumber.textContent;
+
   if (e.currentTarget === plusBtn) curNum++;
+
   if (e.currentTarget === minusBtn) {
     if (curNum === "0" || curNum < 0) return;
     curNum--;
   }
   itemNumber.textContent = curNum;
 };
+
 minusBtn.addEventListener("click", crement);
 plusBtn.addEventListener("click", crement);
 
@@ -109,38 +111,35 @@ overlay.addEventListener("click", hideOverlay);
 function removeActiveFromAll(allmainImages) {
   allmainImages.forEach((each) => each.classList.remove("active-image"));
 }
+
 function itemFunction(allImages, click, selectedImg, selectedImgdis, imgArray) {
   if (!click) return;
-  itemNumber.textContent = 1;
-  removeActiveFromAll(allImages);
-  click.classList.add("active-image");
-  const newImageSrc = click.src.slice(-23);
-  console.log(newImageSrc);
 
+  // Remove the active styles from all Items
+  removeActiveFromAll(allImages);
+  removeActiveFromAll(imgArray);
+
+  // signifying the current item
+  click.classList.add("active-image");
+  const newImageSrc = click.src.slice(-19);
+  const imageNo = click.dataset.img;
+
+  // Main-Page And Slider selested Item
   selectedImg.src = click.src;
   selectedImgdis.src = click.src;
 
-  console.log(click.src);
-  console.log(selectedImg.src);
-  console.log(selectedImgdis.src);
-
-  removeActiveFromAll(imgArray);
+  // Updating the current Slider
+  curSlide = imageNo;
+  goToSlide(curSlide);
 
   const datasetNum = click.dataset.img;
   const newActive = [...imgArray].filter(
     (each) => each.dataset.img === datasetNum
   );
 
-  const datasetNum1 = click.dataset.img;
-  const newActive1 = [...allImages].filter(
-    (each) => each.dataset.img === datasetNum1
-  );
   newActive[0].classList.add("active-image");
-  newActive1[0].classList.add("active-image");
-  goToSlide(`${datasetNum - 1}`);
+  goToSlide(curSlide);
   itemNumber.textContent = 1;
-
-  //   console.log(click.dataset);
 }
 const itemPickedOnMainPage = function (e) {
   const clicked = e.target.closest(".img");
@@ -154,6 +153,7 @@ const itemPickedOnMainPage = function (e) {
   showOverlay();
   displayHide$Show();
 };
+
 const itemPickedOnDisplayedPage = function (e) {
   const clicked = e.target.closest(".img");
   itemFunction(
@@ -172,7 +172,7 @@ const cartBtn = document.querySelector(".cartBtn");
 
 const updateNumOfListItem = function () {
   const allList = cartList.querySelectorAll("li");
-  if (allList > 0 || allList === "" || allList > 0) console.log("Empty");
+  if (allList === 0) return;
   numOfListitem.textContent = allList.length;
 };
 const addItemToCart = function () {
@@ -184,18 +184,13 @@ const addItemToCart = function () {
     selectedImage = activeImage[0].src;
   } else {
     selectedImage = `./images/image-product-${curSlide + 1}.jpg`;
-    // console.log(curSlide + 1);
   }
 
-  console.log(selectedImage);
-
   let noOfitem = itemNumber.textContent;
-  console.log("it worked!");
   if (noOfitem === "0") return;
 
   const itemPric = document.querySelector(".item-slected-price").textContent;
   const itemPrice = itemPric.slice(1);
-  console.log(noOfitem, itemPrice);
 
   const html = `
     <li class="preview cart-item">
@@ -211,20 +206,10 @@ const addItemToCart = function () {
               </p>
           </div>
           <div class="delete-icon">
-              <svg
-              width="14"
-              height="16"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              >
-              <defs>
-                  <path
-                  d="M0 2.625V1.75C0 1.334.334 1 .75 1h3.5l.294-.584A.741.741 0 0 1 5.213 0h3.571a.75.75 0 0 1 .672.416L9.75 1h3.5c.416 0 .75.334.75.75v.875a.376.376 0 0 1-.375.375H.375A.376.376 0 0 1 0 2.625Zm13 1.75V14.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 1 14.5V4.375C1 4.169 1.169 4 1.375 4h11.25c.206 0 .375.169.375.375ZM4.5 6.5c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Zm3 0c0-.275-.225-.5-.5-.5s-.5.225-.5.5v7c0 .275.225.5.5.5s.5-.225.5-.5v-7Z"
-                  id="a"
-                  />
-              </defs>
-              <use fill="#C3CAD9" fill-rule="nonzero" xlink:href="#a" />
-              </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#C3CAD9" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+</svg>
+              
           </div>
       </li>
     `;
@@ -233,11 +218,10 @@ const addItemToCart = function () {
   checkoutBtn.classList.remove("hide");
   emptyCartMsg.classList.add("hide");
 
-  //   console.log(...selectedImage);
   itemNumber.textContent = 0;
 
   updateNumOfListItem();
-  // let NumofListItem =
+
   // ========== TO REMOVE ONE OF THE LISTS
   const removeBtn = document.querySelector(".delete-icon");
   removeBtn.addEventListener("click", function (e) {
@@ -287,46 +271,45 @@ const addMarginLeftToAll = function (index = 1) {
 // };
 // new
 const goToSlide = function (curSlide) {
+  itemNumber.textContent = 1;
+
   sliders.forEach(
     (slide) => (slide.style.transform = `translateX(-${curSlide * 100}%)`)
   );
 };
+
 const slidingActivator = function () {
   removeActiveFromAll(allmainImages);
   removeActiveFromAll(allDisplayImages);
-  console.log(curSlide);
-  const newCurslide = curSlide + 1;
-  const activeMainImage = [...allmainImages].filter(
-    (each) => +each.dataset.img === newCurslide
-  );
-  const activeDisplayImage = [...allDisplayImages].filter(
-    (each) => +each.dataset.img === newCurslide
-  );
-  console.log(activeMainImage);
+
+  const activeMainImage = [...allmainImages].filter((each) => {
+    return +each.dataset.img === curSlide;
+  });
+  const activeDisplayImage = [...allDisplayImages].filter((each) => {
+    return +each.dataset.img === curSlide;
+  });
 
   selectedImage.src = activeMainImage[0].src;
   activeMainImage[0].classList.add("active-image");
   activeDisplayImage[0].classList.add("active-image");
 };
 const nextSlide = function () {
-  if (curSlide === maxSlide - 1) {
+  if (curSlide === maxSlide || curSlide > maxSlide) {
     curSlide = 0;
   } else {
     curSlide++;
   }
-  console.log("next");
 
   slidingActivator();
   goToSlide(curSlide);
 };
 
 const prevSlide = function () {
-  if (curSlide === 0) {
-    curSlide = maxSlide - 1;
+  if (curSlide === zero || curSlide < zero) {
+    curSlide = maxSlide;
   } else {
     curSlide--;
   }
-  console.log(prevBtn);
 
   slidingActivator();
   goToSlide(curSlide);
@@ -336,8 +319,6 @@ const hideSideOverlay = function () {
   overlay.classList.toggle("hide");
   // displayHide$Show();
   // showSIdeOverlay()
-
-  console.log("yes");
 };
 
 const logo = document.querySelector(".logo");
@@ -347,15 +328,11 @@ cartBtn.addEventListener("click", addItemToCart);
 prevBtn.addEventListener("click", prevSlide);
 nextBtn.addEventListener("click", nextSlide);
 const observer = new ResizeObserver((enteries) => {
-  // console.log(enteries);
-  // console.log(enteries[0].contentRect.width);
   if (enteries[0].contentRect.width > 1024)
     displayItemRoot.classList.add("hide");
 
   if (enteries[0].contentRect.width < 1024)
     displayItemRoot.classList.remove("hide");
-  // closeBtn.classList.add("hide");
-  // allDisplayitemsdiv.classList.add("hide");
 });
 observer.observe(body);
 // ========== INIT FUNCTION

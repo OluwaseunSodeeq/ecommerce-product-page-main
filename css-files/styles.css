@@ -30,6 +30,7 @@
   color: var(--grayish-blue);
   font-weight: 400;
 }
+
 body {
   position: relative;
   font-family: "Kumbh Sans", serif;
@@ -86,6 +87,7 @@ nav > .navs {
   margin-right: 250px;
 }
 .hero-section {
+  position: relative;
   width: 100%;
   margin-top: 60px;
   padding: 0 50px;
@@ -240,16 +242,17 @@ nav > .navs {
 /* Cart div */
 .cart-div {
   position: absolute;
-  left: 1108px;
+  right: 100px;
+  /* left: 1108px; */
   width: 350px;
   height: auto;
   border: 2px solid var(--White);
   border-radius: 7px;
   padding-top: 20px;
   padding-bottom: 30px;
-  z-index: 3px;
+  z-index: 30;
   background-color: var(--White);
-  top: 70px;
+  top: 80px;
   box-shadow: 0px 5px 0.4em var(--Dark-grayish-blue);
   /* border: 2px solid red; */
 }
@@ -317,8 +320,6 @@ nav > .navs {
 .cart-login-icons .login,
 .cart-login-icons .cart-icon {
   width: 40px;
-  /* height: 40px; */
-  /* border-radius: 50%; */
   cursor: pointer;
 }
 
@@ -368,7 +369,6 @@ nav > .navs {
 
 .display-body {
   width: 500px;
-  /* width: 50%; */
   position: absolute;
   z-index: 9;
   padding-top: 30px;
@@ -407,13 +407,10 @@ nav > .navs {
 
   right: 3px;
 }
-/* .container .selected-item img {
-  width: 100%;
-} */
+
 .display-body .overlay-other-items,
 .container {
   width: 450px;
-  /* border: 2px solid #000; */
 }
 .display-body .overlay-other-items > div {
   width: 100px;
